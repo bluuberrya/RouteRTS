@@ -5,9 +5,16 @@
 // RTS_Group10.cpp : This file contains the 'main' function. Program execution begins and ends there.
 // https://github.com/qt/qtlocation
 
-#include <iostream>
+#include "main.h"
 
 int main()
 {
     std::cout << "Hello World!\n";
+
+    // execute backend
+    // get data
+    // execute ui
+
+
+    return 0;
 }
