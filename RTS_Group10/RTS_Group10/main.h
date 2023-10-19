@@ -1,6 +1,10 @@
 #ifndef MAINH_H
 #define MAINH_H
 
+//#include <QGuiApplication>
+//#include <QQuickView>
+//#include <QGeoRoute>
+
 #include <iostream>
 #include <fstream>
 #include <string>

@@ -136,7 +136,7 @@ public:
 		}
 	}
 
-	void readCarListFromCSV() {
+	void readMallListFromCSV() {
 		string mallID;
 		string name;
 		string address;
