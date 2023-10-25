@@ -16,5 +16,16 @@ int main()
     // execute ui
 
 
+    // data into matrix
+
+    // route calculation using matrix data
+    
+    // process query, call calculation function
+
+
+    // ---
+
+    // user input
+
     return 0;
 }
