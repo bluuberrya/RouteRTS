@@ -8,5 +8,6 @@
 
 //put into matrix table
 
+// use double for latitude and longitude
 
 #endif
