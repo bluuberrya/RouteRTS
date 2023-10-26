@@ -10,7 +10,6 @@
 #include <iomanip>
 #include <thread>
 
-using namespace std;
 
 
 #endif
