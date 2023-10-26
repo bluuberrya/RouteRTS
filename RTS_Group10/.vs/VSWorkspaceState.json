@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\RTS_Group10"
   ],
-  "SelectedNode": "\\RTS_Group10.sln",
+  "SelectedNode": "\\RTS_Group10\\main.c",
   "PreviewInSolutionExplorer": false
 }

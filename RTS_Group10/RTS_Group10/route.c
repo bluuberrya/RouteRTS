@@ -1,5 +1,3 @@
-#include "main.h"
-
 // routeDistance(mallA, mallB)
 // search for mallA mallB in mallData struct and put into routeData struct
 // call routeDistance calculation function (use matrix data)
@@ -21,3 +19,18 @@
 // route 1: 12km	| normal		| 30km/h	| 13mins
 // route 2: 15km	| heavy traffic	| 10km/h	| 20mins
 // route 3: 9km		| barely moving	| 3km/h		| 30mins
+
+#include "main.h"
+#include "mallData.h"
+#include "route.h"
+
+int main() {// act as main before transferring to a more concise main.c
+
+    fileHandler();
+    createMatrix();
+    getRouteInfo("Pavilion Kuala Lumpur", "Pavilion Bukit Jalil");//should be converted to user input later
+
+    graphRoute(8);
+
+    return 0;
+}
