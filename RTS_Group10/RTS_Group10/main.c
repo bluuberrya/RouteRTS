@@ -11,6 +11,8 @@ int main()
 {
     printf("Hello World!");
 
+    //commented help
+
     // main is used in FreeRTOS
 
     // Workflow
