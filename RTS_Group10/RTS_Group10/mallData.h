@@ -12,6 +12,7 @@
 #endif
 
 typedef struct {
+    int mallID;
     char name[100];
     double latitude;
     double longitude;
@@ -20,7 +21,11 @@ typedef struct {
 Mall malls[48]; // Assuming 48 malls
 #define NUM_MALLS 48
 
-double distanceMatrix[NUM_MALLS][NUM_MALLS];
+// Define the Graph struct
+typedef struct {
+    int numVertices;
+    double** adjMatrix; // Adjacency matrix with distances
+} Graph;
 
 void fileHandler() {
     FILE* file = fopen("RTS Mall.csv", "r");
@@ -34,6 +39,9 @@ void fileHandler() {
 
     while (fgets(line, sizeof(line), file)) {
         char* token = strtok(line, ",");
+        malls[mallIndex].mallID = atoi(token); // Read and store the mall ID
+
+        token = strtok(NULL, ",");
         strcpy(malls[mallIndex].name, token);
 
         token = strtok(NULL, ",");
@@ -46,208 +54,120 @@ void fileHandler() {
     }
 
     fclose(file);
-
-    // Access the contents of the first struct in the array
-    // for testing, should delete in actual system
-    printf("Mall Name: %s\n", malls[0].name);
-    printf("Latitude: %lf\n", malls[0].latitude);
-    printf("Longitude: %lf\n", malls[0].longitude);
-
 }
 
-double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
-    // Radius of the Earth in kilometers
-    double R = 6371.0;
-
-    // Convert latitude and longitude from degrees to radians
-    lat1 = lat1 * M_PI / 180.0;
-    lon1 = lon1 * M_PI / 180.0;
-    lat2 = lat2 * M_PI / 180.0;
-    lon2 = lon2 * M_PI / 180.0;
-
-    // Haversine formula
-    double dlon = lon2 - lon1;
-    double dlat = lat2 - lat1;
-    double a = sin(dlat / 2) * sin(dlat / 2) + cos(lat1) * cos(lat2) * sin(dlon / 2) * sin(dlon / 2);
-    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
-    double distance = R * c;
-
-    return distance;
-}
-
-void createMatrix() {
-    for (int i = 0; i < NUM_MALLS; i++) {
-        for (int j = 0; j < NUM_MALLS; j++) {
-            if (i != j) {
-                distanceMatrix[i][j] = calculateDistance(malls[i].latitude, malls[i].longitude, malls[j].latitude, malls[j].longitude);
-            }
-        }
-    }
-}
-
-#ifndef GRAPH_H
-#define GRAPH_H
-#endif // GRAPH_H
-
-typedef struct {
-    int numVertices;
-    Mall* vertices;
-    double** adjMatrix;
-} Graph;
-
-Graph* createGraph(int numVertices, Mall* malls) {
+Graph* createGraph(int numVertices) {
     Graph* graph = (Graph*)malloc(sizeof(Graph));
     graph->numVertices = numVertices;
-    graph->vertices = malls;
 
-    // Allocate memory for the adjacency matrix and initialize it
     graph->adjMatrix = (double**)malloc(numVertices * sizeof(double*));
     for (int i = 0; i < numVertices; i++) {
         graph->adjMatrix[i] = (double*)malloc(numVertices * sizeof(double));
+    }
+
+    for (int i = 0; i < numVertices; i++) {
         for (int j = 0; j < numVertices; j++) {
-            graph->adjMatrix[i][j] = 0.0;
+            graph->adjMatrix[i][j] = 0.0; // Initialize distances to 0
         }
     }
 
     return graph;
 }
 
-void addEdge(Graph* graph, int start, int end, double distance) {
-    // Add an edge between the two malls with the given distance
-    graph->adjMatrix[start][end] = distance;
-    graph->adjMatrix[end][start] = distance;
+// Haversine formula to calculate distance between two points on the Earth's surface
+double haversine(double lat1, double lon1, double lat2, double lon2) {
+    const double R = 6371.0; // Radius of the Earth in kilometers
+    lat1 *= M_PI / 180.0;
+    lon1 *= M_PI / 180.0;
+    lat2 *= M_PI / 180.0;
+    lon2 *= M_PI / 180.0;
+
+    double dlat = lat2 - lat1;
+    double dlon = lon2 - lon1;
+
+    double a = sin(dlat / 2) * sin(dlat / 2) + cos(lat1) * cos(lat2) * sin(dlon / 2) * sin(dlon / 2);
+    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+
+    return R * c;
 }
 
-void destroyGraph(Graph* graph) {
-    for (int i = 0; i < graph->numVertices; i++) {
-        free(graph->adjMatrix[i]);
-    }
-    free(graph->adjMatrix);
-    free(graph);
+// Function to add an edge with the calculated distance to the graph
+void addEdge(Graph* graph, int src, int dest) {
+    double distance = haversine(malls[src].latitude, malls[src].longitude, malls[dest].latitude, malls[dest].longitude);
+    graph->adjMatrix[src][dest] = distance;
+    graph->adjMatrix[dest][src] = distance;
 }
 
+// Function to print the graph
 void printGraph(Graph* graph) {
-    printf("Graph (Adjacency Matrix):\n");
-
+    printf("Graph with pairwise distances between shopping malls:\n");
     for (int i = 0; i < graph->numVertices; i++) {
-        printf("%s: ", graph->vertices[i].name);
-
         for (int j = 0; j < graph->numVertices; j++) {
-            printf("%lf ", graph->adjMatrix[i][j]);
+            printf("%.2lf\t", graph->adjMatrix[i][j]);
         }
-
         printf("\n");
     }
 }
 
-int minDistance(double* dist, bool* visited, int numVertices) {
-    double min = INFINITY;
-    int minIndex = -1;
-
-    for (int v = 0; v < numVertices; v++) {
-        if (!visited[v] && dist[v] < min) {
-            min = dist[v];
-            minIndex = v;
-        }
-    }
-
-    return minIndex;
+int getUserMallIDInput(const char* prompt) {
+    int mallID;
+    printf("%s: ", prompt);
+    scanf("%d", &mallID);
+    return mallID;
 }
 
-// Helper function to print the top 3 shortest routes
-void printShortestRoutes(Graph*graph, double* dist, int* prev, int numVertices, int src) {
-    // Create an array to store the results
-    double shortestDistances[3] = { INFINITY, INFINITY, INFINITY };
-    int shortestPaths[3] = { -1, -1, -1 };
-
-    // Iterate through all vertices
-    for (int v = 0; v < numVertices; v++) {
-        if (v != src) {
-            // If a shorter distance is found, update the results
-            if (dist[v] < shortestDistances[0]) {
-                shortestDistances[2] = shortestDistances[1];
-                shortestPaths[2] = shortestPaths[1];
-                shortestDistances[1] = shortestDistances[0];
-                shortestPaths[1] = shortestPaths[0];
-                shortestDistances[0] = dist[v];
-                shortestPaths[0] = v;
-            }
-            else if (dist[v] < shortestDistances[1]) {
-                shortestDistances[2] = shortestDistances[1];
-                shortestPaths[2] = shortestPaths[1];
-                shortestDistances[1] = dist[v];
-                shortestPaths[1] = v;
-            }
-            else if (dist[v] < shortestDistances[2]) {
-                shortestDistances[2] = dist[v];
-                shortestPaths[2] = v;
-            }
-        }
+// Function to find the distance between two malls based on mallID
+double findDistanceBetweenMalls(Graph* graph, int startMallID, int endMallID) {
+    if (startMallID < 1 || startMallID > NUM_MALLS || endMallID < 1 || endMallID > NUM_MALLS) {
+        printf("Invalid mall IDs. Please enter valid IDs between 1 and %d.\n", NUM_MALLS);
+        return -1.0; // Indicate an error
     }
 
-    // Print the top 3 shortest routes
-    printf("\nTop 3 Shortest Routes from %s:\n", graph->vertices[src].name);
-    for (int i = 0; i < 3; i++) {
-        int destination = shortestPaths[i];
-        if (destination != -1) {
-            printf("Route %d: %s to %s, Distance: %lf km\n", i + 1, graph->vertices[src].name, graph->vertices[destination].name, shortestDistances[i]);
-        }
+    int startIndex = startMallID - 1; // Adjust for array indexing
+    int endIndex = endMallID - 1;     // Adjust for array indexing
+
+    double distance = graph->adjMatrix[startIndex][endIndex];
+
+    if (distance == 0.0) {
+        printf("No direct connection between these two malls.\n");
     }
+    else {
+        printf("Distance between %s and %s: %.2lf kilometers\n", malls[startIndex].name, malls[endIndex].name, distance);
+    }
+
+    return distance;
 }
 
-// Function to calculate the top 3 shortest routes using Dijkstra's algorithm
-void calculateShortestRoutes(Graph* graph, int src) {
-    int numVertices = graph->numVertices;
-    double* dist = (double*)malloc(numVertices * sizeof(double));
-    bool* visited = (bool*)malloc(numVertices * sizeof(bool));
-    int* prev = (int*)malloc(numVertices * sizeof(int));
+void printMallList() {
+    printf("Welcome to the Mall Distance Calculator\n");
+    printf("Mall ID\tMall Name\n");
 
-    for (int i = 0; i < numVertices; i++) {
-        dist[i] = INFINITY;
-        visited[i] = false;
-        prev[i] = -1;
+    for (int i = 0; i < NUM_MALLS; i++) {
+        printf("%d\t%s\n", malls[i].mallID, malls[i].name);
     }
-
-    dist[src] = 0.0;
-
-    for (int count = 0; count < numVertices - 1; count++) {
-        int u = minDistance(dist, visited, numVertices);
-        visited[u] = true;
-
-        for (int v = 0; v < numVertices; v++) {
-            if (!visited[v] && graph->adjMatrix[u][v] != 0 && dist[u] != INFINITY &&
-                dist[u] + graph->adjMatrix[u][v] < dist[v]) {
-                dist[v] = dist[u] + graph->adjMatrix[u][v];
-                prev[v] = u;
-            }
-        }
-    }
-
-    // Print the top 3 shortest routes
-    printShortestRoutes(graph, dist, prev, numVertices, src);
-
-    free(dist);
-    free(visited);
-    free(prev);
+    printf("Select Your Starting & Ending Point\n");
 }
 
-void graphRoute(int sourceMallIndex) {
-    // Create the graph
-    Graph* mallGraph = createGraph(NUM_MALLS, malls);
+void routeSelection() {
+    int startMallID, endMallID;
+    double distance;
 
-    // Populate the graph with edges and distances
+    // Create the graph and add edges
+    Graph* graph = createGraph(NUM_MALLS);
     for (int i = 0; i < NUM_MALLS; i++) {
         for (int j = i + 1; j < NUM_MALLS; j++) {
-            double distance = calculateDistance(malls[i].latitude, malls[i].longitude, malls[j].latitude, malls[j].longitude);
-            addEdge(mallGraph, i, j, distance);
+            addEdge(graph, i, j);
         }
     }
 
-    // Calculate and print the top 3 shortest routes from the specified source mall
-    calculateShortestRoutes(mallGraph, sourceMallIndex);
+    printMallList();
 
-    // Don't forget to destroy the graph when you're done
-    destroyGraph(mallGraph);
+    do {
+        startMallID = getUserMallIDInput("Enter the starting mall's ID");
+        endMallID = getUserMallIDInput("Enter the ending mall's ID");
+
+        distance = findDistanceBetweenMalls(graph, startMallID, endMallID);
+    } while (distance == -1.0);
 }
 
 #endif
