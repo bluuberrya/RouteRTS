@@ -119,7 +119,7 @@ int getUserMallIDInput(const char* prompt) {
 // Function to find the distance between two malls based on mallID
 double findDistanceBetweenMalls(Graph* graph, int startMallID, int endMallID) {
     if (startMallID < 1 || startMallID > NUM_MALLS || endMallID < 1 || endMallID > NUM_MALLS) {
-        printf("Invalid mall IDs. Please enter valid IDs between 1 and %d.\n", NUM_MALLS);
+        printf("\nInvalid mall IDs. Please enter valid IDs between 1 and %d.\n", NUM_MALLS);
         return -1.0; // Indicate an error
     }
 
@@ -129,12 +129,11 @@ double findDistanceBetweenMalls(Graph* graph, int startMallID, int endMallID) {
     double distance = graph->adjMatrix[startIndex][endIndex];
 
     if (distance == 0.0) {
-        printf("No direct connection between these two malls.\n");
+        printf("\nNo direct connection between these two malls.\n");
     }
     else {
-        printf("Distance between %s and %s: %.2lf kilometers\n", malls[startIndex].name, malls[endIndex].name, distance);
+        printf("\nDistance between %s and %s: %.2lf kilometers\n", malls[startIndex].name, malls[endIndex].name, distance);
     }
-
     return distance;
 }
 
@@ -159,12 +158,16 @@ void routeSelection() {
 
     printMallList();
 
-    do {
-        startMallID = getUserMallIDInput("Enter the starting mall's ID");
-        endMallID = getUserMallIDInput("Enter the ending mall's ID");
-
-        distance = findDistanceBetweenMalls(graph, startMallID, endMallID);
-    } while (distance == -1.0);
+reinputMallID:
+    distance = 0;
+    print("\n");
+    startMallID = getUserMallIDInput("Enter the starting mall's ID");
+    endMallID = getUserMallIDInput("Enter the ending mall's ID");
+    getchar();
+    distance = findDistanceBetweenMalls(graph, startMallID, endMallID);
+    if (distance == -1.0) {
+        goto reinputMallID;
+    }
 }
 
 #endif

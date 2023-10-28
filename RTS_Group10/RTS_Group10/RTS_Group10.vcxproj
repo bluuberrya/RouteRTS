@@ -135,6 +135,7 @@
   <ItemGroup>
     <ClInclude Include="main.h" />
     <ClInclude Include="mallData.h" />
+    <ClInclude Include="menu.h" />
     <ClInclude Include="route.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

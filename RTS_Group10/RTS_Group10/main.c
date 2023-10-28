@@ -1,17 +1,29 @@
-////TP061635	Yam Chen Xi
-////TP060653	Ng Wen Xuan
-//
-//// RTS_Group10.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+//TP061635	Yam Chen Xi
+//TP060653	Ng Wen Xuan
+
 #include "main.h"
-#include "mallData.h"
+#include "menu.h"
 
 int main() {
-    fileHandler();
-    menu();
-    routeSelection();
-    return 0;
+	char cont;
+
+	//Loop menu until user wants to end the program
+	do {
+		system("cls");
+		printf("Welcome to the Mall Distance Calculator\n- - - - -\n");
+		menu();
+
+		//press x to exit
+		printf("\nPress <enter> to continue OR 'X' to end: ");
+		scanf("%c", &cont);
+		
+	} while ((cont != 'x') && (cont != 'X'));
+
+	printf("\nThank you and have a great day! \n");
+	return 0;
 }
+
+
 // 
 //#include "main.h"
 //

@@ -1,9 +1,15 @@
 #include "main.h"
-
+#include "mallData.h"
+#include "route.h"
 
 void menu() {
-	printf("Welcome to the Mall Distance Calculator\n");
-    printMallList();
+    fileHandler();
     printf("Select Your Starting & Ending Point\n");
+    routeSelection();
+
+    //get many routes
+    //get three shortest in distance
+    //add motorist data/ speed
+    //get duration of three routes
 
 }
