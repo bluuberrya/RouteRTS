@@ -1,10 +1,18 @@
 ////TP061635	Yam Chen Xi
 ////TP060653	Ng Wen Xuan
 //
-//
 //// RTS_Group10.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//// https://github.com/qt/qtlocation
 //
+#include "main.h"
+#include "mallData.h"
+
+int main() {
+    fileHandler();
+    menu();
+    routeSelection();
+    return 0;
+}
+// 
 //#include "main.h"
 //
 //int main()

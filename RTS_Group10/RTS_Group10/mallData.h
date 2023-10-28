@@ -139,13 +139,10 @@ double findDistanceBetweenMalls(Graph* graph, int startMallID, int endMallID) {
 }
 
 void printMallList() {
-    printf("Welcome to the Mall Distance Calculator\n");
     printf("Mall ID\tMall Name\n");
-
     for (int i = 0; i < NUM_MALLS; i++) {
         printf("%d\t%s\n", malls[i].mallID, malls[i].name);
     }
-    printf("Select Your Starting & Ending Point\n");
 }
 
 void routeSelection() {

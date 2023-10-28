@@ -7,4 +7,6 @@
 #include <string.h>
 #include <stdbool.h>
 
+void menu();
+
 #endif
