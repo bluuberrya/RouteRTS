@@ -1,7 +1,18 @@
 //#include "main.h"
 //#include "mallData.h"
 //#include "route.h"
-//
+
+// Function to find all routes from startMallID to endMallID using DFS
+//void findAllRoutes(Graph* graph, int startMallID, int endMallID) {
+//    // Implement DFS to traverse the graph and find all routes
+//    // Calculate speed and duration for each route based on traffic conditions
+//}
+
+void printline() {
+	printf("hehe");
+}
+
+
 //// Function to initialize a path
 //Path* initPath(int numNodes) {
 //    Path* path = (Path*)malloc(sizeof(Path));

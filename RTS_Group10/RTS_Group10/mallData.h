@@ -160,7 +160,7 @@ void routeSelection() {
 
 reinputMallID:
     distance = 0;
-    print("\n");
+    printf("\n");
     startMallID = getUserMallIDInput("Enter the starting mall's ID");
     endMallID = getUserMallIDInput("Enter the ending mall's ID");
     getchar();
