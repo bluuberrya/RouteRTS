@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="mallData.c" />
     <ClCompile Include="menu.c" />
     <ClCompile Include="route.c" />
     <ClCompile Include="main.c" />

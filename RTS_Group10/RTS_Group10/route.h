@@ -3,7 +3,6 @@
 #ifndef ROUTE_H
 #define ROUTE_H
 
-
 #include "main.h"
 
 typedef struct {
@@ -13,6 +12,13 @@ typedef struct {
     double speed;    // Speed for the route (consider traffic conditions)
     double duration; // Duration to travel from start to end mall
 } Route;
+
+typedef struct {
+    int startMallID;
+    int endMallID;
+    int numRoutes;
+    Route* routes; // An array of routes
+} RouteResult;
 
 // Function to initialize a path
 //Path* initPath(int numNodes);
