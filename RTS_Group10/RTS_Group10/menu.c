@@ -12,4 +12,7 @@ void menu() {
     //add motorist data/ speed
     //get duration of three routes
 
+    // Call route calculation and manipulation functions from route.c
+
+
 }

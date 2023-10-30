@@ -132,7 +132,6 @@ void routeSelection() {
             addEdge(graph, i, j);
         }
     }
-
     printMallList();
 
 reinputMallID:

@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <conio.h>
 #define _USE_MATH_DEFINES // This is needed for Windows
 #include <math.h>
 

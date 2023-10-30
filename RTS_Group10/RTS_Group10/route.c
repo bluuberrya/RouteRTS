@@ -2,135 +2,103 @@
 #include "mallData.h"
 #include "route.h"
 
-// Function to find all routes from startMallID to endMallID using DFS
-//void findAllRoutes(Graph* graph, int startMallID, int endMallID) {
-//    // Implement DFS to traverse the graph and find all routes
-//    // Calculate speed and duration for each route based on traffic conditions
-//}
+// Define your route calculation functions here
+// Implement a DFS-based route finder, duration calculator, etc.
+// Store routes in an array of Route structures
 
-RouteResult calculateRoutes(Graph* graph, int startMallID, int endMallID) {
-    // Check if the provided startMallID and endMallID are valid
-    if (startMallID < 1 || startMallID > NUM_MALLS || endMallID < 1 || endMallID > NUM_MALLS) {
-        RouteResult result;
-        result.startMallID = startMallID;
-        result.endMallID = endMallID;
-        result.numRoutes = 0;
-        result.routes = NULL;
-        return result;
+void findRoutesBetweenMalls(Graph* graph, int startMallID, int endMallID, int currentMallID, Route* currentRoute, Route* allRoutes, int* routeCount) {
+    if (currentMallID == endMallID) {
+        // We have reached the destination mall
+        allRoutes[*routeCount] = *currentRoute;
+        (*routeCount)++;
+        return;
     }
 
-    int startIndex = startMallID - 1; // Adjust for array indexing
-    int endIndex = endMallID - 1;     // Adjust for array indexing
+    for (int i = 0; i < graph->numVertices; i++) {
+        if (graph->adjMatrix[currentMallID][i] > 0) {
+            // There is a connection from the current mall to another mall
+            if (!isMallVisited(currentRoute, i)) {
+                // If the mall has not been visited in this route
+                currentRoute->endMallID = i;
+                currentRoute->distance += graph->adjMatrix[currentMallID][i];
+                currentRoute->duration = calculateDuration(currentRoute);
 
-    // Implement DFS or BFS to traverse the graph and find routes
-    // Initialize the RouteResult structure to store the routes
-    RouteResult result;
-    result.startMallID = startMallID;
-    result.endMallID = endMallID;
-    result.numRoutes = 0; // Initialize the number of routes to 0
-    result.routes = (Route*)malloc(sizeof(Route) * NUM_MALLS); // Assuming a maximum number of routes
+                findRoutesBetweenMalls(graph, startMallID, endMallID, i, currentRoute, allRoutes, routeCount);
 
-    // Implement the graph traversal to find routes
-    // For each route found, populate the RouteResult structure
+                // Backtrack to explore other routes
+                currentRoute->endMallID = -1;
+                currentRoute->distance -= graph->adjMatrix[currentMallID][i];
+                currentRoute->duration = 0.0;
+            }
+        }
+    }
+}
 
-    return result;
+// Function to check if a mall has already been visited in the current route
+bool isMallVisited(const Route* route, int mallID) {
+    for (int i = 0; i < MAX_ROUTE_LENGTH; i++) {
+        if (route->visitedMalls[i] == mallID) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// Function to calculate the duration of a route based on speed and distance
+double calculateDuration(const Route* route) {
+    // Assume a constant speed in this example, you can modify this as needed
+    const double averageSpeedKmph = 60.0; // 60 kilometers per hour
+
+    double duration = route->distance / averageSpeedKmph;
+    return duration;
 }
 
 
+void findRoutesBetweenMalls(Graph* graph, int startMallID, int endMallID, int currentMallID, Route* currentRoute, Route* allRoutes, int* routeCount) {
+    if (currentMallID == endMallID) {
+        // We have reached the destination mall
+        allRoutes[*routeCount] = *currentRoute;
+        (*routeCount)++;
+        return;
+    }
 
-//// Function to initialize a path
-//Path* initPath(int numNodes) {
-//    Path* path = (Path*)malloc(sizeof(Path));
-//    path->nodes = (int*)malloc(numNodes * sizeof(int));
-//    path->length = 0;
-//    path->distance = 0.0;
-//    return path;
-//}
-//
-//// Function to free a path
-//void freePath(Path* path) {
-//    free(path->nodes);
-//    free(path);
-//}
-//
-//// Function to find the three shortest routes from startMallID to endMallID
-//Path** findShortestRoutes(Graph* graph, int startMallID, int endMallID) {
-//    int numNodes = graph->numVertices;
-//
-//    // Initialize arrays to track visited nodes and distances
-//    int* visited = (int*)malloc(numNodes * sizeof(int));
-//    double* minDistances = (double*)malloc(numNodes * sizeof(double));
-//
-//    for (int i = 0; i < numNodes; i++) {
-//        visited[i] = 0;
-//        minDistances[i] = DBL_MAX; // Initialize distances to infinity
-//    }
-//
-//    // Initialize the start node
-//    int startIndex = startMallID - 1;
-//    minDistances[startIndex] = 0.0;
-//
-//    // Initialize an array to store the paths
-//    Path** paths = (Path**)malloc(3 * sizeof(Path*));
-//    for (int i = 0; i < 3; i++) {
-//        paths[i] = initPath(numNodes);
-//    }
-//
-//    // Dijkstra's algorithm
-//    for (int count = 0; count < 3; count++) {
-//        int u = -1;
-//        for (int i = 0; i < numNodes; i++) {
-//            if (!visited[i] && (u == -1 || minDistances[i] < minDistances[u])) {
-//                u = i;
-//            }
-//        }
-//
-//        if (u == -1) {
-//            break;
-//        }
-//
-//        visited[u] = 1;
-//
-//        for (int v = 0; v < numNodes; v++) {
-//            if (!visited[v] && graph->adjMatrix[u][v] > 0) {
-//                double alt = minDistances[u] + graph->adjMatrix[u][v];
-//                if (alt < minDistances[v]) {
-//                    minDistances[v] = alt;
-//
-//                    // Update the path
-//                    Path* path = paths[count];
-//                    path->nodes[path->length] = u + 1; // Adjust for 1-based index
-//                    path->length++;
-//                    path->distance = minDistances[v];
-//                }
-//            }
-//        }
-//    }
-//
-//    // Free memory and return the paths
-//    free(visited);
-//    free(minDistances);
-//    return paths;
-//}
-//
-//
-//getShortestRoute(Graph*graph, int startMallID, int endMallID) {
-//    Path** shortestRoutes = findShortestRoutes(graph, startMallID, endMallID);
-//
-//    // Print the three shortest routes
-//    printf("Three Shortest Routes from %s to %s:\n", malls[startMallID - 1].name, malls[endMallID - 1].name);
-//    for (int i = 0; i < 3; i++) {
-//        Path* path = shortestRoutes[i];
-//        printf("Route %d: Distance %.2lf km, Path: ", i + 1, path->distance);
-//        for (int j = 0; j < path->length; j++) {
-//            printf("%s", malls[path->nodes[j] - 1].name); // Adjust for 1-based index
-//            if (j < path->length - 1) {
-//                printf(" -> ");
-//            }
-//        }
-//        printf("\n");
-//        freePath(path);
-//    }
-//    free(shortestRoutes);
-//
-//}
+    for (int i = 0; i < graph->numVertices; i++) {
+        if (graph->adjMatrix[currentMallID][i] > 0) {
+            // There is a connection from the current mall to another mall
+            if (!isMallVisited(currentRoute, i)) {
+                // If the mall has not been visited in this route
+                currentRoute->visitedMalls[currentRoute->routeLength] = i;
+                currentRoute->routeLength++;
+                currentRoute->endMallID = i;
+                currentRoute->distance += graph->adjMatrix[currentMallID][i];
+                currentRoute->duration = calculateDuration(currentRoute);
+
+                findRoutesBetweenMalls(graph, startMallID, endMallID, i, currentRoute, allRoutes, routeCount);
+
+                // Backtrack to explore other routes
+                currentRoute->endMallID = -1;
+                currentRoute->routeLength--;
+                currentRoute->visitedMalls[currentRoute->routeLength] = -1;
+                currentRoute->distance -= graph->adjMatrix[currentMallID][i];
+                currentRoute->duration = 0.0;
+            }
+        }
+    }
+}
+
+// Function to find and store routes between mall A and mall B
+void findAndStoreRoutes(Graph* graph, int startMallID, int endMallID, Route* allRoutes, int* routeCount) {
+    Route currentRoute;
+    currentRoute.startMallID = startMallID;
+    currentRoute.endMallID = -1; // Initialize endMallID as -1
+    currentRoute.distance = 0.0;
+    currentRoute.trafficConditions = 0.0;
+    currentRoute.duration = 0.0;
+
+    for (int i = 0; i < MAX_ROUTE_LENGTH; i++) {
+        currentRoute.visitedMalls[i] = -1; // Initialize visited malls as -1
+    }
+    currentRoute.routeLength = 0;
+
+    findRoutesBetweenMalls(graph, startMallID, endMallID, startMallID, &currentRoute, allRoutes, routeCount);
+}
