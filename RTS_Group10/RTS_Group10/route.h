@@ -3,7 +3,7 @@
 #ifndef ROUTE_H
 #define ROUTE_H
 
-#define MAX_ROUTES 50 // Define the maximum possible number of malls in a route
+#define MAX_ROUTES 3 // Define the maximum possible number of malls in a route
 
 typedef struct {
     int startMallID;
@@ -18,9 +18,9 @@ typedef struct {
 
 bool isMallVisited(const Route* route, int mallID);
 double calculateDuration(const Route* route);
-void findThreeRoutesBetweenMalls(Graph* graph, int startMallID, int endMallID, int currentMallID, Route* currentRoute, Route* shortestRoutes, int* routeCount);
-void findAndStoreThreeRoutes(Graph* graph, int startMallID, int endMallID, Route* shortestRoutes, int* routeCount);
-void findAndStoreThreeRoutesHelper(Graph* graph, int startMallID, int endMallID, int currentMallID, Route* currentRoute, Route* shortestRoutes, int* routeCount, int maxRoutes);
+//void findThreeRoutesBetweenMalls(Graph* graph, int startMallID, int endMallID, int currentMallID, Route* currentRoute, Route* shortestRoutes, int* routeCount);
+//void findAndStoreThreeRoutes(Graph* graph, int startMallID, int endMallID, Route* shortestRoutes, int* routeCount);
+//void findAndStoreThreeRoutesHelper(Graph* graph, int startMallID, int endMallID, int currentMallID, Route* currentRoute, Route* shortestRoutes, int* routeCount, int maxRoutes);
 //void findRoutesBetweenMalls(Graph* graph, int startMallID, int endMallID, int currentMallID, Route* currentRoute, Route* allRoutes, int* routeCount);
 //void findAndStoreRoutes(Graph* graph, int startMallID, int endMallID, Route* allRoutes, int* routeCount);
 double compareRoutesByDistance(const void* a, const void* b);
