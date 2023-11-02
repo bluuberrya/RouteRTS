@@ -16,6 +16,12 @@ typedef struct {
     // Add more fields as needed
 } Route;
 
+int minDistance(double dist[], bool sptSet[], int numVertices);
+void printShortestPath(int parent[], int j);
+double calculateShortestRoute(Graph* graph, int src, int dest, double speed);
+double findThreeShortestRoutes(Graph* graph, int src, int dest, double speeds[3]);
+
+
 bool isMallVisited(const Route* route, int mallID);
 double calculateDuration(const Route* route);
 //void findThreeRoutesBetweenMalls(Graph* graph, int startMallID, int endMallID, int currentMallID, Route* currentRoute, Route* shortestRoutes, int* routeCount);

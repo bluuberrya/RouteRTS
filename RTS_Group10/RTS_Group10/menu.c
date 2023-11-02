@@ -2,33 +2,66 @@
 #include "mallData.h"
 #include "route.h"
 
+//void menu() {
+//    //fileHandler();
+//    //printf("Select Your Starting & Ending Point\n");
+//    //routeSelection();
+//    //system("pause");
+//
+//    fileHandler();
+//    printf("Select Your Starting & Ending Point\n");
+//    printMallList();
+//
+//    int startMallID, endMallID;
+//    double speed;
+//    printf("\n");
+//
+//    startMallID = getUserMallIDInput("Enter the starting mall's ID");
+//    endMallID = getUserMallIDInput("Enter the ending mall's ID");
+//
+//    printf("Enter the speed (in kilometers per hour): ");
+//    scanf("%lf", &speed);
+//
+//    Graph* graph = createGraph(NUM_MALLS);
+//    for (int i = 0; i < NUM_MALLS; i++) {
+//        for (int j = i + 1; j < NUM_MALLS; j++) {
+//            addEdge(graph, i, j);
+//        }
+//    }
+//
+//    // Calculate and display the shortest route with the given speed
+//    calculateShortestRoute(graph, startMallID - 1, endMallID - 1, speed);
+//
+//    free(graph); // Don't forget to free the memory for the graph when you're done.
+//}
+
 void menu() {
     fileHandler();
     printf("Select Your Starting & Ending Point\n");
-    routeSelection();
-    system("pause");
+    printMallList();
 
-    //get many routes
-    //get three shortest in distance
-    //add motorist data/ speed
-    //get duration of three routes
+    int startMallID, endMallID;
+    double speed;
+    printf("\n");
 
-    //// Get input for startMallID and endMallID
-    //int startMallID = getUserMallIDInput("Enter the starting mall's ID");
-    //int endMallID = getUserMallIDInput("Enter the ending mall's ID");
+    startMallID = getUserMallIDInput("Enter the starting mall's ID");
+    endMallID = getUserMallIDInput("Enter the ending mall's ID");
 
-    //// Call the modified function to find and store the three shortest routes
-    //Route shortestRoutes[3]; // Define an array to store the three shortest routes
-    //int shortestRouteCount = 0;
-    //findAndStoreThreeRoutes(graph, startMallID, endMallID, shortestRoutes, &shortestRouteCount);
+    printf("Enter the speed (in kilometers per hour): ");
+    scanf("%lf", &speed);
 
-    //// Display the three shortest routes
-    //printf("\nThree Shortest Routes between Mall %d and Mall %d (by distance):\n", startMallID, endMallID);
-    //for (int i = 0; i < shortestRouteCount; i++) {
-    //    printf("Route %d: Distance=%.2lf km, Duration=%.2lf hours, Traffic=%.2lf\n",
-    //        i + 1, shortestRoutes[i].distance, shortestRoutes[i].duration, shortestRoutes[i].trafficConditions);
-    //}
+    Graph* graph = createGraph(NUM_MALLS);
+    for (int i = 0; i < NUM_MALLS; i++) {
+        for (int j = i + 1; j < NUM_MALLS; j++) {
+            addEdge(graph, i, j);
+        }
+    }
 
+    // Calculate and display the shortest route with the given speed
+    double duration = calculateShortestRoute(graph, startMallID - 1, endMallID - 1, speed);
 
+    // Print the duration of the shortest route
+    printf("\nDuration of the Shortest Route: %.2lf hours\n", duration);
 
+    free(graph); // Don't forget to free the memory for the graph when you're done.
 }

@@ -2,6 +2,7 @@
 #include "mallData.h"
 #include "route.h"
 
+
 /*
 
 Djikstra, get three nearby malls based on coordinates to generate 3 shortest distance routes 
@@ -20,77 +21,171 @@ bool isMallVisited(const Route* route, int mallID) {
 }
 
 // Function to calculate the duration of a route based on speed and distance
+// motorist data
 double calculateDuration(const Route* route) {
     // Assume a constant speed in this example, you can modify this as needed
-    const double averageSpeedKmph = 60.0; // 60 kilometers per hour
+    double randomValue = (double)rand() / RAND_MAX * 101.0 + 50.0;
+
+    const double averageSpeedKmph = randomValue; // 60 kilometers per hour
 
     double duration = route->distance / averageSpeedKmph;
     return duration;
 }
 
-//// Function to find routes between mall A and mall B using DFS and store the three shortest routes
-//void findThreeRoutesBetweenMalls(Graph* graph, int startMallID, int endMallID, int currentMallID, Route* currentRoute, Route* shortestRoutes, int* routeCount) {
-//    if (currentMallID == endMallID) {
-//        // We have reached the destination mall
-//        // Compare the current route with the three shortest routes
-//        int i;
-//        for (i = 0; i < 3; i++) {
-//            if (currentRoute->distance < shortestRoutes[i].distance) {
-//                break;
-//            }
-//        }
-//        if (i < 3) {
-//            // Found a shorter route, shift others and insert this route
-//            for (int j = 2; j > i; j--) {
-//                shortestRoutes[j] = shortestRoutes[j - 1];
-//            }
-//            shortestRoutes[i] = *currentRoute;
-//        }
-//        return;
-//    }
-//
-//    for (int i = 0; i < graph->numVertices; i++) {
-//        if (graph->adjMatrix[currentMallID][i] > 0) {
-//            // There is a connection from the current mall to another mall
-//            if (!isMallVisited(currentRoute, i)) {
-//                // If the mall has not been visited in this route
-//                currentRoute->visitedMalls[currentRoute->routeLength] = i;
-//                currentRoute->routeLength++;
-//                currentRoute->endMallID = i;
-//                currentRoute->distance += graph->adjMatrix[currentMallID][i];
-//                currentRoute->duration = calculateDuration(currentRoute);
-//
-//                findThreeRoutesBetweenMalls(graph, startMallID, endMallID, i, currentRoute, shortestRoutes, routeCount);
-//
-//                // Backtrack to explore other routes
-//                currentRoute->endMallID = -1;
-//                currentRoute->routeLength--;
-//                currentRoute->visitedMalls[currentRoute->routeLength] = -1;
-//                currentRoute->distance -= graph->adjMatrix[currentMallID][i];
-//                currentRoute->duration = 0.0;
-//            }
-//        }
-//    }
-//}
-
-// Function to find and store the three shortest routes between mall A and mall B
-//void findAndStoreThreeRoutes(Graph* graph, int startMallID, int endMallID, Route* shortestRoutes, int* routeCount) {
-//    Route currentRoute;
-//    currentRoute.startMallID = startMallID;
-//    currentRoute.endMallID = -1; // Initialize endMallID as -1
-//    currentRoute.distance = 0.0;
-//    currentRoute.trafficConditions = 0.0;
-//    currentRoute.duration = 0.0;
-//
-//    for (int i = 0; i < MAX_ROUTES; i++) {
-//        currentRoute.visitedMalls[i] = -1; // Initialize visited malls as -1
-//    }
-//    currentRoute.routeLength = 0;
-//
-//    // Call the helper function with an additional parameter to limit the number of routes
-//    findAndStoreThreeRoutes(graph, startMallID, endMallID, startMallID, &currentRoute, shortestRoutes, routeCount);
-//}
-
 double compareRoutesByDistance(const void* a, const void* b) {
     return ((Route*)a)->distance - ((Route*)b)->distance;
 }
+
+// -----------------------------------------------------------------------
+
+int minDistance(double dist[], bool sptSet[], int numVertices) {
+    double min = DBL_MAX;
+    int min_index;
+
+    for (int v = 0; v < numVertices; v++) {
+        if (!sptSet[v] && dist[v] < min) {
+            min = dist[v];
+            min_index = v;
+        }
+    }
+
+    return min_index;
+}
+
+// Function to print the shortest path
+//void printShortestPath(int parent[], int j) {
+//    if (parent[j] == -1)
+//        return;
+//
+//    printShortestPath(parent, parent[j]);
+//    printf(" -> %s", malls[j].name);
+//}
+
+void printShortestPath(int parent[], int j) {
+    if (j == -1)
+        return;
+
+    /*printShortestPath(parent, parent[j]);*/
+    printf(" -> %s", malls[j].name);
+}
+
+double findThreeShortestRoutes(Graph* graph, int src, int dest, double speeds[3]) {
+    double* shortestDurations = (double*)malloc(3 * sizeof(double));
+    int** shortestRoutes = (int**)malloc(3 * sizeof(int*));
+
+    for (int i = 0; i < 3; i++) {
+        shortestRoutes[i] = (int*)malloc(graph->numVertices * sizeof(int));
+        shortestDurations[i] = DBL_MAX;
+        for (int j = 0; j < graph->numVertices; j++) {
+            shortestRoutes[i][j] = -1;
+        }
+    }
+
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < graph->numVertices; j++) {
+            int previousMall = src;
+            int currentMall = j;
+
+            if (currentMall == src) {
+                continue;
+            }
+
+            if (currentMall == dest) {
+                continue;
+            }
+
+            if (currentMall == previousMall) {
+                continue;
+            }
+
+            double duration = calculateShortestRoute(graph, src, currentMall, speeds[i]);
+
+            if (duration < shortestDurations[i]) {
+                shortestDurations[i] = duration;
+                shortestRoutes[i][0] = src;
+                shortestRoutes[i][1] = currentMall;
+                shortestRoutes[i][2] = dest;
+            }
+        }
+
+        src = shortestRoutes[i][1];
+    }
+
+    // Find the shortest duration route among the three
+    int shortestIndex = 0;
+    for (int i = 1; i < 3; i++) {
+        if (shortestDurations[i] < shortestDurations[shortestIndex]) {
+            shortestIndex = i;
+        }
+    }
+
+    int durationInMinutes = shortestDurations[shortestIndex] * 60;
+
+    // Display the shortest route
+    printf("\nShortest Route from %s to %s:", malls[src].name, malls[dest].name);
+    printShortestPath(shortestRoutes[shortestIndex], dest);
+    printf("\n");
+
+    //printf("Distance: %.2lf kilometers\n", shortestDurations[shortestIndex]);
+
+    printf("Duration: %.5lf minutes\n", shortestDurations[shortestIndex]);
+
+    // Free the dynamically allocated memory
+    for (int i = 0; i < 3; i++) {
+        free(shortestRoutes[i]);
+    }
+    free(shortestRoutes);
+    free(shortestDurations);
+
+    return shortestDurations[shortestIndex];
+}
+
+
+
+double calculateShortestRoute(Graph* graph, int src, int dest, double speed) {
+    int numVertices = graph->numVertices;
+    double* dist = (double*)malloc(numVertices * sizeof(double));
+    bool* sptSet = (bool*)malloc(numVertices * sizeof(bool));
+    int* parent = (int*)malloc(numVertices * sizeof(int));
+
+    for (int i = 0; i < numVertices; i++) {
+        dist[i] = DBL_MAX;
+        sptSet[i] = false;
+    }
+
+    dist[src] = 0;
+
+    for (int count = 0; count < numVertices - 1; count++) {
+        int u = minDistance(dist, sptSet, numVertices);
+        sptSet[u] = true;
+
+        for (int v = 0; v < numVertices; v++) {
+            if (!sptSet[v] && graph->adjMatrix[u][v] && dist[u] != DBL_MAX &&
+                dist[u] + graph->adjMatrix[u][v] < dist[v]) {
+                dist[v] = dist[u] + graph->adjMatrix[u][v];
+                parent[v] = u;
+            }
+        }
+    }
+
+    // Calculate the shortest path and its distance
+    double distance = dist[dest];
+    free(dist);
+    free(sptSet);
+
+    // Calculate duration based on distance and speed (duration = distance / speed)
+    double duration = distance / speed;
+
+    //printf("Shortest Route from %s to %s:", malls[src].name, malls[dest].name);
+    //printShortestPath(parent, dest);
+    //printf("\n");
+
+    //printf("Distance: %.2lf kilometers\n", distance);
+    //printf("Duration: %.2lf hours\n", duration);
+
+    free(parent); // Don't forget to free the parent array
+
+    return duration;
+}
+
+
