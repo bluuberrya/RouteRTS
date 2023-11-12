@@ -31,6 +31,7 @@ Graph* createGraph(int numVertices);
 double haversine(double lat1, double lon1, double lat2, double lon2);
 void addEdge(Graph* graph, int src, int dest);
 void printGraph(Graph* graph);
+int generateRandomMallID(int excludeID);
 int getUserMallIDInput(const char* prompt);
 double findDistanceBetweenMalls(Graph* graph, int startMallID, int endMallID);
 void printMallList();

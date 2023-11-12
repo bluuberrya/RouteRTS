@@ -15,9 +15,9 @@ int main() {
 
 		//press x to exit
 		printf("\nPress <enter> to continue OR 'X' to end: ");
-		scanf("%c", &cont);
+		scanf(" %c", &cont);
 		getchar();
-		
+
 	} while ((cont != 'x') && (cont != 'X'));
 
 	printf("\nThank you and have a great day! \n");

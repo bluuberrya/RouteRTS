@@ -41,14 +41,20 @@ void menu() {
     printMallList();
 
     int startMallID, endMallID;
-    double speed;
+    double speed = (double)rand() / RAND_MAX * 101.0 + 50.0;;
     printf("\n");
 
-    startMallID = getUserMallIDInput("Enter the starting mall's ID");
-    endMallID = getUserMallIDInput("Enter the ending mall's ID");
+    //startMallID = getUserMallIDInput("Enter the starting mall's ID");
+    //endMallID = getUserMallIDInput("Enter the ending mall's ID");
 
-    printf("Enter the speed (in kilometers per hour): ");
-    scanf("%lf", &speed);
+    startMallID = generateRandomMallID(-1);  // -1 indicates no exclusion
+    endMallID = generateRandomMallID(startMallID);
+
+    printf("Generated random values:\n");
+    printf("Start Mall ID: %d\n", startMallID);
+    printf("End Mall ID: %d\n", endMallID);
+
+    printf("Random Speed: %lf", speed);
 
     Graph* graph = createGraph(NUM_MALLS);
     for (int i = 0; i < NUM_MALLS; i++) {

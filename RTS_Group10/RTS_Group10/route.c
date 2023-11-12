@@ -52,15 +52,6 @@ int minDistance(double dist[], bool sptSet[], int numVertices) {
     return min_index;
 }
 
-// Function to print the shortest path
-//void printShortestPath(int parent[], int j) {
-//    if (parent[j] == -1)
-//        return;
-//
-//    printShortestPath(parent, parent[j]);
-//    printf(" -> %s", malls[j].name);
-//}
-
 void printShortestPath(int parent[], int j) {
     if (j == -1)
         return;
@@ -69,76 +60,76 @@ void printShortestPath(int parent[], int j) {
     printf(" -> %s", malls[j].name);
 }
 
-double findThreeShortestRoutes(Graph* graph, int src, int dest, double speeds[3]) {
-    double* shortestDurations = (double*)malloc(3 * sizeof(double));
-    int** shortestRoutes = (int**)malloc(3 * sizeof(int*));
-
-    for (int i = 0; i < 3; i++) {
-        shortestRoutes[i] = (int*)malloc(graph->numVertices * sizeof(int));
-        shortestDurations[i] = DBL_MAX;
-        for (int j = 0; j < graph->numVertices; j++) {
-            shortestRoutes[i][j] = -1;
-        }
-    }
-
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < graph->numVertices; j++) {
-            int previousMall = src;
-            int currentMall = j;
-
-            if (currentMall == src) {
-                continue;
-            }
-
-            if (currentMall == dest) {
-                continue;
-            }
-
-            if (currentMall == previousMall) {
-                continue;
-            }
-
-            double duration = calculateShortestRoute(graph, src, currentMall, speeds[i]);
-
-            if (duration < shortestDurations[i]) {
-                shortestDurations[i] = duration;
-                shortestRoutes[i][0] = src;
-                shortestRoutes[i][1] = currentMall;
-                shortestRoutes[i][2] = dest;
-            }
-        }
-
-        src = shortestRoutes[i][1];
-    }
-
-    // Find the shortest duration route among the three
-    int shortestIndex = 0;
-    for (int i = 1; i < 3; i++) {
-        if (shortestDurations[i] < shortestDurations[shortestIndex]) {
-            shortestIndex = i;
-        }
-    }
-
-    int durationInMinutes = shortestDurations[shortestIndex] * 60;
-
-    // Display the shortest route
-    printf("\nShortest Route from %s to %s:", malls[src].name, malls[dest].name);
-    printShortestPath(shortestRoutes[shortestIndex], dest);
-    printf("\n");
-
-    //printf("Distance: %.2lf kilometers\n", shortestDurations[shortestIndex]);
-
-    printf("Duration: %.5lf minutes\n", shortestDurations[shortestIndex]);
-
-    // Free the dynamically allocated memory
-    for (int i = 0; i < 3; i++) {
-        free(shortestRoutes[i]);
-    }
-    free(shortestRoutes);
-    free(shortestDurations);
-
-    return shortestDurations[shortestIndex];
-}
+//double findThreeShortestRoutes(Graph* graph, int src, int dest, double speeds[3]) {
+//    double* shortestDurations = (double*)malloc(3 * sizeof(double));
+//    int** shortestRoutes = (int**)malloc(3 * sizeof(int*));
+//
+//    for (int i = 0; i < 3; i++) {
+//        shortestRoutes[i] = (int*)malloc(graph->numVertices * sizeof(int));
+//        shortestDurations[i] = DBL_MAX;
+//        for (int j = 0; j < graph->numVertices; j++) {
+//            shortestRoutes[i][j] = -1;
+//        }
+//    }
+//
+//    for (int i = 0; i < 3; i++) {
+//        for (int j = 0; j < graph->numVertices; j++) {
+//            int previousMall = src;
+//            int currentMall = j;
+//
+//            if (currentMall == src) {
+//                continue;
+//            }
+//
+//            if (currentMall == dest) {
+//                continue;
+//            }
+//
+//            if (currentMall == previousMall) {
+//                continue;
+//            }
+//
+//            double duration = calculateShortestRoute(graph, src, currentMall, speeds[i]);
+//
+//            if (duration < shortestDurations[i]) {
+//                shortestDurations[i] = duration;
+//                shortestRoutes[i][0] = src;
+//                shortestRoutes[i][1] = currentMall;
+//                shortestRoutes[i][2] = dest;
+//            }
+//        }
+//
+//        src = shortestRoutes[i][1];
+//    }
+//
+//    // Find the shortest duration route among the three
+//    int shortestIndex = 0;
+//    for (int i = 1; i < 3; i++) {
+//        if (shortestDurations[i] < shortestDurations[shortestIndex]) {
+//            shortestIndex = i;
+//        }
+//    }
+//
+//    int durationInMinutes = shortestDurations[shortestIndex] * 60;
+//
+//    // Display the shortest route
+//    printf("\nShortest Route from %s to %s:", malls[src].name, malls[dest].name);
+//    printShortestPath(shortestRoutes[shortestIndex], dest);
+//    printf("\n");
+//
+//    //printf("Distance: %.2lf kilometers\n", shortestDurations[shortestIndex]);
+//
+//    printf("Duration: %.5lf minutes\n", shortestDurations[shortestIndex]);
+//
+//    // Free the dynamically allocated memory
+//    for (int i = 0; i < 3; i++) {
+//        free(shortestRoutes[i]);
+//    }
+//    free(shortestRoutes);
+//    free(shortestDurations);
+//
+//    return shortestDurations[shortestIndex];
+//}
 
 
 

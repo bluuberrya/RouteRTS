@@ -86,6 +86,14 @@ void printGraph(Graph* graph) {
     }
 }
 
+int generateRandomMallID(int excludeID) {
+    int randomID;
+    do {
+        randomID = rand() % NUM_MALLS + 1;
+    } while (randomID == excludeID);
+    return randomID;
+}
+
 int getUserMallIDInput(const char* prompt) {
     int mallID;
     printf("%s: ", prompt);
