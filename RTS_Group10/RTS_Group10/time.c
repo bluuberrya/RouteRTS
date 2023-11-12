@@ -1,10 +1,10 @@
 #include "main.h"
 
-// elapsedStart()
-// return startTime
+clock_t getCurrentTime() {
+    return clock();
+}
 
-// elapsedEnd()
-// return endTime
-
-// getElapsed()
-// return totalElapsedTime
+// Function to calculate elapsed time in seconds
+double calculateElapsedTime(clock_t startTime, clock_t endTime) {
+    return (double)(endTime - startTime) / CLOCKS_PER_SEC;
+}

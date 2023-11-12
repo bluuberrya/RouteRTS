@@ -11,30 +11,30 @@ then apply speed to routes for duration of routes
 */
 
 
-bool isMallVisited(const Route* route, int mallID) {
-    for (int i = 0; i < MAX_ROUTES; i++) {
-        if (route->visitedMalls[i] == mallID) {
-            return true;
-        }
-    }
-    return false;
-}
+//bool isMallVisited(const Route* route, int mallID) {
+//    for (int i = 0; i < MAX_ROUTES; i++) {
+//        if (route->visitedMalls[i] == mallID) {
+//            return true;
+//        }
+//    }
+//    return false;
+//}
 
 // Function to calculate the duration of a route based on speed and distance
 // motorist data
-double calculateDuration(const Route* route) {
-    // Assume a constant speed in this example, you can modify this as needed
-    double randomValue = (double)rand() / RAND_MAX * 101.0 + 50.0;
+//double calculateDuration(const Route* route) {
+//    // Assume a constant speed in this example, you can modify this as needed
+//    double randomValue = (double)rand() / RAND_MAX * 101.0 + 50.0;
+//
+//    const double averageSpeedKmph = randomValue; // 60 kilometers per hour
+//
+//    double duration = route->distance / averageSpeedKmph;
+//    return duration;
+//}
 
-    const double averageSpeedKmph = randomValue; // 60 kilometers per hour
-
-    double duration = route->distance / averageSpeedKmph;
-    return duration;
-}
-
-double compareRoutesByDistance(const void* a, const void* b) {
-    return ((Route*)a)->distance - ((Route*)b)->distance;
-}
+//double compareRoutesByDistance(const void* a, const void* b) {
+//    return ((Route*)a)->distance - ((Route*)b)->distance;
+//}
 
 // -----------------------------------------------------------------------
 

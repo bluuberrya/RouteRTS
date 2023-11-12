@@ -20,8 +20,4 @@ int minDistance(double dist[], bool sptSet[], int numVertices);
 void printShortestPath(int parent[], int j);
 double calculateShortestRoute(Graph* graph, int src, int dest, double speed);
 
-bool isMallVisited(const Route* route, int mallID);
-double calculateDuration(const Route* route);
-double compareRoutesByDistance(const void* a, const void* b);
-
 #endif
