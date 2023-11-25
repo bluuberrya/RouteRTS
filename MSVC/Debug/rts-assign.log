@@ -1,0 +1,15 @@
+﻿  main.c
+D:\APU\Degree\Year 3 - Sem 1\RTS Real Time System\Lab\win32-simulator-freeRTOS\Examples\rts-assign\mainh.h(4,1): warning C4005: '_CRT_SECURE_NO_WARNINGS': macro redefinition
+D:\APU\Degree\Year 3 - Sem 1\RTS Real Time System\Lab\win32-simulator-freeRTOS\Examples\rts-assign\mainh.h(4,1): message : '_CRT_SECURE_NO_WARNINGS' previously declared on the command line
+D:\APU\Degree\Year 3 - Sem 1\RTS Real Time System\Lab\win32-simulator-freeRTOS\Examples\rts-assign\main.c(39,22): warning C4101: 'endMallID': unreferenced local variable
+D:\APU\Degree\Year 3 - Sem 1\RTS Real Time System\Lab\win32-simulator-freeRTOS\Examples\rts-assign\main.c(39,9): warning C4101: 'startMallID': unreferenced local variable
+D:\APU\Degree\Year 3 - Sem 1\RTS Real Time System\Lab\win32-simulator-freeRTOS\Examples\rts-assign\main.c(127,39): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+D:\APU\Degree\Year 3 - Sem 1\RTS Real Time System\Lab\win32-simulator-freeRTOS\Examples\rts-assign\main.c(129,27): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+D:\APU\Degree\Year 3 - Sem 1\RTS Real Time System\Lab\win32-simulator-freeRTOS\Examples\rts-assign\main.c(131,27): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+D:\APU\Degree\Year 3 - Sem 1\RTS Real Time System\Lab\win32-simulator-freeRTOS\Examples\rts-assign\main.c(203,39): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+D:\APU\Degree\Year 3 - Sem 1\RTS Real Time System\Lab\win32-simulator-freeRTOS\Examples\rts-assign\main.c(205,27): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+D:\APU\Degree\Year 3 - Sem 1\RTS Real Time System\Lab\win32-simulator-freeRTOS\Examples\rts-assign\main.c(207,27): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+D:\APU\Degree\Year 3 - Sem 1\RTS Real Time System\Lab\win32-simulator-freeRTOS\Examples\rts-assign\main.c(262,39): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+D:\APU\Degree\Year 3 - Sem 1\RTS Real Time System\Lab\win32-simulator-freeRTOS\Examples\rts-assign\main.c(264,27): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+D:\APU\Degree\Year 3 - Sem 1\RTS Real Time System\Lab\win32-simulator-freeRTOS\Examples\rts-assign\main.c(266,27): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  rts-assign.vcxproj -> D:\APU\Degree\Year 3 - Sem 1\RTS Real Time System\Lab\win32-simulator-freeRTOS\Examples\rts-assign\MSVC\Debug\rts-assign.exe
